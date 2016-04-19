@@ -1,0 +1,100 @@
+\everymath{\displaystyle}
+
+\tikzset{
+  keep name/.style={%set style for name?
+    prefix after command={
+      \pgfextra{\let\fixname\tikzlastnode}%?
+    }
+  },
+  partialbox/.style={%set style for partial box?
+    keep name,
+    append after command={
+  ([xshift=#1]\fixname.north west) -- 
+  (\fixname.north west) -- 
+  (\fixname.south west) -- 
+  ([xshift=#1]\fixname.south west)
+  ([xshift=-#1]\fixname.north east) -- 
+  (\fixname.north east) -- 
+  (\fixname.south east) -- 
+  ([xshift=-#1]\fixname.south east)
+    }
+  },%end of style setting for partial box
+  partialbox/.default=8pt%default for partial coverage
+}
+
+\newcommand{\dnode}{\path[draw=red!80!black,line width=1pt,rounded
+corners=10pt,densely dashed] 
+node[partialbox=12pt,minimum height=20pt,align=center,inner sep=10pt]}
+
+\newcommand{\xnode}{\path[draw=yellow!80!black,line width=1pt,rounded
+corners=10pt,densely dashed] 
+node[partialbox=12pt,minimum height=20pt,align=center,inner sep=10pt]}
+
+\setlength{\unitlength}{200pt}%no effect!
+
+\begin{tikzpicture}
+	\dnode at (2,0)(dint) {定积分\\ $\int_a^bf(x)\d x$};
+	\dnode at (5,2.5)(int) {不定积分\\ $\int f(x)\d x$};
+	\path[<->] (int.west) edge[very thick,red] (dint.north);
+	\dnode at (5,0)(dx) {微分\\ $\d x$};
+	\path[->] (dx) edge[very thick,red] (dint);
+	\dnode at (7.5,0)(dev) {导数\\ $\df{\d y}{\d x}$};
+	\path[->] (dx) edge[very thick,red] (dev);
+	\path[->] (dev) edge[very thick,red] (int);
+	\dnode at (10,0)(ddev) {高阶导数\\ $\df{\d^n y}{\d x^n}$};
+	\path[->] (dev) edge[very thick,red] (ddev);
+	\dnode at (2,-2.5)(fx) {函数\\ $f(x)$};
+	\path[->] (fx) edge[very thick,red] (dint);
+	\dnode at (0.5,-5)(f) {映射\\ $f$};
+	\path[->] (f) edge[very thick,red] (fx);
+	\dnode at (4,-5)(set) {集合\\ $x\in D$};
+	\path[->] (set) edge[very thick,red] (fx);
+	\dnode at (5,-2.5)(serie) {无穷级数\\ $\sum_{n=1}^{\infty}S_n$};
+	\path[->] (serie) edge[very thick,red] (dint);
+	\dnode at (7.5,-5)(lim) {数列极限\\ $\lim_{n\to\infty}a_n$};
+	\path[->] (lim) edge[very thick,red] (serie);
+	\dnode at (7.5,-2.5)(limx) {函数极限\\ $\lim_{x\to\Delta}f(x)$};
+	\path[->] (lim) edge[very thick,red] (limx);
+	\path[->] (limx) edge[very thick,red] (dev);
+	\xnode at (9,5)(de) {微分方程\\ $f(x,y,y',y'',\ldots)=0$};
+	\path[->] (dev) edge[very thick,yellow!80!black] (de);
+	\path[->] (ddev) edge[very thick,yellow!80!black] (de);
+	\xnode at (-3,2.5)(iint) {重积分\\ $\iint_Df(x,y)\d\sigma$};
+	\path[->] (dint) edge[very thick,yellow!80!black] (iint);
+	\xnode at (-3,0)(cint) {曲线积分\\ $\int_Sf(x,y)\d s$};
+	\path[->] (dint) edge[very thick,yellow!80!black] (cint);
+	\xnode at (-3,-2.5)(sint) {曲面积分\\ $\iint_{\Sigma}f(x,y,z)\d S$};
+	\path[->] (dint) edge[very thick,yellow!80!black] (sint);
+	\xnode at (-3,5)(xyz) {空间解析几何\\ $\bm{a}\cdot\bm{b}$};
+	\path[->] (xyz) edge[very thick,yellow!80!black] (iint);
+\end{tikzpicture}
+
+{\it 效果不理想，结构没有理清楚，很多关系无法通过平面图形展示出来}
+
+%================
+
+% \tikzstyle{every picture}+=[remember picture]
+% 
+% \everymath{\displaystyle}
+% 
+% 
+% 
+% % \tikzstyle{na} = [baseline=-.5ex]%set the baseline
+% \begin{tikzpicture}
+%     \node[fill=blue!20, ellipse, anchor=base] at(2,0) (f1)
+%     {\mbox{定积分}\\ {\Large$\int_a^bf(x)\d x$}};
+%     \node[fill=red!20, ellipse, anchor=base] at (4,0) (f2)
+%     {$\d x$};
+%     \node[fill=green!20, ellipse, anchor=base] at (6,0) (f3)
+%     {$\df{\d y}{\d x}$};
+%     \node[fill=red!20, ellipse, anchor=base] at (8,0) (f4)
+%     {$\df{\d^n y}{\d x^n}$};
+% 	\node[fill=red!20, ellipse, anchor=base] at (2,-2) (f5)
+%     {$f(x)$};
+% \end{tikzpicture}
+% 
+% \begin{tikzpicture}[overlay]
+%     \path[->] (f2) edge[thick,red] (f1);
+%     \path[->] (f3) edge[very thick,red] (f2);
+%     \path[->] (f3) edge[thick,red] (f4);
+% \end{tikzpicture}
